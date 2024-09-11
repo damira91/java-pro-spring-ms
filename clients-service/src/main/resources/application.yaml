@@ -1,3 +1,5 @@
+server:
+  port: 8190
 spring:
   application:
     name: clients-service
