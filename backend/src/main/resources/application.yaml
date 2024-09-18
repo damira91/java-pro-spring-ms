@@ -2,16 +2,40 @@ spring:
   application:
     name: java-pro-spring
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5433/postgres
     driver-class-name: org.postgresql.Driver
-    username: admin
-    password: admin
+    username: postgres
+    password: postgres
   jpa:
     show-sql: true
   data:
     jdbc:
       dialect: postgresql
+  flyway:
+    baseline-on-migrate: true
 
+app:
+  transfers:
+    ai-transfers-checking: true
+    blocked-accounts-masks:
+      - "^1111*$"
+      - "^2222*$"
+    max-transfers-retry-count: 3
+    new-feature-flag: true
+    param1:
+      a: 10
+      b: 20
+      c: 30
+    param2:
+      a: 30
+      b: 20
+      c: 10
 integrations:
   clients-info-service:
     url: "http://localhost:8190/api/v1/clients"
+    read-timeout: 30s
+    write-timeout: 2s
+  limits-service:
+    url: "http://localhost:8822/api/v1/limits"
+    read-timeout: 20s
+    write-timeout: 1s
