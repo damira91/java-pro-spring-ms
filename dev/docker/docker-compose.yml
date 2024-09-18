@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  wiremock-service:
+    image: wiremock/wiremock
+    container_name: wiremock-service
+    ports:
+      - "8822:8080"
+    volumes:
+      - ./wiremock/stubs/__files/:/home/wiremock/__files/
+      - ./wiremock/stubs/mappings/:/home/wiremock/mappings/
+    command:
+      - -verbose
+      - -global-response-templating
+
+  postgres:
+    image: postgres:15.0
+    domainname: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-U", "postgres"]
+      interval: 5s
+      timeout: 1s
+      retries: 3
